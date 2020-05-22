@@ -1,0 +1,24 @@
+{
+  "name": "turnoff-namuwiki",
+  "version": "0.7.1",
+  "description": "Turns off your namuwiki",
+  "main": "src/",
+  "repository": "https://github.com/Alex4386/turnoff-namuwiki.git",
+  "author": "Alex4386 <psh010209@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "^3.5.2",
+    "webextension-polyfill": "^0.4.0"
+  },
+  "devDependencies": {
+    "ts-loader": "^6.2.1",
+    "web-ext-types": "^3.2.0",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build-package": "tsc && ./build.sh"
+  }
+}
