@@ -80,7 +80,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                 // const searchQuery = /((?!#\?)+)[#?]/.exec(decodeURIComponent(parsed[3]))[1];
 
                 const searchQuery = /[^?#]*/.exec(decodeURIComponent(parsed[3]))[0];
-                const langCode = /^((\w){2})/.exec(navigator.language)[1];
+                const langCode = /(가-힣)+/.test(searchQuery) ? "ko" : /^[A-z0-9 ]$/.test(searchQuery) ? "en" : /^((\w){2})/.exec(navigator.language)[1]; 
 
                 // check for intelliBan
                 if (config.intelliBanEnabled) {
@@ -93,6 +93,7 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 
               if (searchQuery && !/^(나무위키|파일|분류|틀):.+/.test(searchQuery)) {
                     console.log('searchQuery:', searchQuery);
+             const redirectQuery = searchQuery.split('/')[0];
                     if (config.openRiss && !/^[a-z ]+$/.test(searchQuery)) {
                         await browser.tabs.create({
                             url: `http://www.riss.kr/search/Search.do?detailSearch=false&searchGubun=true&oldQuery=&query=${searchQuery}`,
@@ -116,16 +117,16 @@ browser.tabs.onUpdated.addListener(async (tabId, info, tab) => {
                         });
                     }
 
-                    const escapedSearchQuery = searchQuery.replace(/ /g, "_");
+                    const escapedRedirectQuery = redirectQuery.replace(/ /g, "_");
                     if (config.openWikipedia && langCode) {
                         await browser.tabs.create({
-                            url: `https://${langCode}.wikipedia.org/wiki/${escapedSearchQuery}`,
+                            url: `https://${langCode}.wikipedia.org/wiki/${escapedRedirectQuery}`,
                         });
                     }
 
                     if (config.openLibrewiki && langCode) {
                         await browser.tabs.create({
-                            url: `https://librewiki.net/wiki/${escapedSearchQuery}`,
+                            url: `https://librewiki.net/wiki/${escapedRedirectQuery}`,
                         });
                     }
                 }
